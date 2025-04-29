@@ -199,9 +199,6 @@ void BoringTraningPlugin::RenderSettings()
 		ImGui::SetTooltip("Set GameSpeed to half normal speed");
 	}
 
-	ImGui::TextUnformatted("------------------------------------------------- ");
-	ImGui::TextUnformatted("On Air Slow Motion");
-
 }
 
 string BoringTraningPlugin::GetPluginName()
