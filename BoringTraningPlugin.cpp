@@ -19,6 +19,7 @@ void BoringTraningPlugin::onLoad()
 		if (PointAT) PointAT = false;
 		else PointAT = true;
 
+		
 		this->SetCarRotation();
 
 		}, "Point the car head to ball", 0);
@@ -43,7 +44,7 @@ void BoringTraningPlugin::onUnload()
 
 void BoringTraningPlugin::SetCarRotation()
 {
-	if (PointAT || !IsKeepPointing)
+	if (PointAT || !IsKeepPointing && gameWrapper->IsInFreeplay())
 	{
 		auto GameWP = gameWrapper;
 
@@ -96,29 +97,33 @@ void BoringTraningPlugin::SetCarRotation()
 
 void BoringTraningPlugin::SlomotionWhenOnAir()
 {
-	auto Car = gameWrapper->GetGameEventAsServer().GetCars().Get(0);
-	auto GameWP = gameWrapper;
-
-	if (!GameWP->IsInFreeplay())return;
-	if (GameWP->GetGameEventAsServer().GetGameBalls().Count() == 0) return;
-
-	GameSpeed = cvarManager->getCvar("OnAirGameSpeed").getFloatValue();
-
-	if (!Car.IsOnGround() && !Car.IsOnWall())
+	if (gameWrapper->IsInFreeplay())
 	{
-		IsOnAir = true;
-	}
-	else IsOnAir = false;
+		auto Car = gameWrapper->GetGameEventAsServer().GetCars().Get(0);
+		auto GameWP = gameWrapper;
 
-	if (IsOnAir && IsStartSlomo)
-	{
-		GameWP->GetGameEventAsServer().SetGameSpeed(this->GameSpeed);
-	}
-	else GameWP->GetGameEventAsServer().SetGameSpeed(1.0f);
+		if (!GameWP->IsInFreeplay())return;
+		if (GameWP->GetGameEventAsServer().GetGameBalls().Count() == 0) return;
 
-	GameWP->SetTimeout([this](GameWrapper* GW) {
-		this->SlomotionWhenOnAir();
-		}, 0.1f);
+		GameSpeed = cvarManager->getCvar("OnAirGameSpeed").getFloatValue();
+
+		if (!Car.IsOnGround() && !Car.IsOnWall())
+		{
+			IsOnAir = true;
+		}
+		else IsOnAir = false;
+
+		if (IsOnAir && IsStartSlomo)
+		{
+			GameWP->GetGameEventAsServer().SetGameSpeed(this->GameSpeed);
+		}
+		else GameWP->GetGameEventAsServer().SetGameSpeed(1.0f);
+
+		GameWP->SetTimeout([this](GameWrapper* GW) {
+			this->SlomotionWhenOnAir();
+			}, 0.1f);
+	}
+	else return;
 }
 
 void BoringTraningPlugin::RenderSettings()
