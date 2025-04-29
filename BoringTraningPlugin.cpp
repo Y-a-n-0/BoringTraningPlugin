@@ -87,7 +87,7 @@ void BoringTraningPlugin::SetCarRotation()
 			gameWrapper->SetTimeout([this](GameWrapper* gp)
 				{
 					this->SetCarRotation();
-				}, 0.05f);
+				}, 0.01f);
 		}
 
 		this->cvarManager->log("Rotating");
@@ -121,7 +121,7 @@ void BoringTraningPlugin::SlomotionWhenOnAir()
 
 		GameWP->SetTimeout([this](GameWrapper* GW) {
 			this->SlomotionWhenOnAir();
-			}, 0.1f);
+			}, 0.01f);
 	}
 	else return;
 }
