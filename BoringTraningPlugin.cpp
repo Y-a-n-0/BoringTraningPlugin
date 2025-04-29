@@ -148,7 +148,7 @@ void BoringTraningPlugin::RenderSettings()
 	CVarWrapper KeepPointing = cvarManager->getCvar("KeepPointing");
 	if (!KeepPointing)return;
 	this->IsKeepPointing = KeepPointing.getBoolValue();
-	if (ImGui::Checkbox("Keep Pointing To Car", &IsKeepPointing))
+	if (ImGui::Checkbox("Keep Pointing To Ball", &IsKeepPointing))
 	{
 		KeepPointing.setValue(IsKeepPointing);
 	}
